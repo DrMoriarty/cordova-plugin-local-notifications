@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.util.Pair;
+import android.util.Log;
 import android.view.View;
 
 import org.apache.cordova.CallbackContext;
@@ -122,6 +123,12 @@ public class LocalNotification extends CordovaPlugin {
     @Override
     public boolean execute (final String action, final JSONArray args,
                             final CallbackContext command) throws JSONException {
+
+        if(android.os.Build.VERSION.SDK_INT < 19) {
+            // we don't support devices under KitKat (android 4.4)
+            Log.w("LocalNotification", "Device not supported! I need at least API Level 19.");
+            return true;
+        }
 
         if (action.equals("launch")) {
             launch(command);
